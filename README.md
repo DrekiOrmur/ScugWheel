@@ -1,8 +1,10 @@
 ## **Created by [Dreki Ormur](https://bsky.app/profile/drekiormur.bsky.social)**
 
 ## Libraries used  
-[Winwheel](https://github.com/zarocknz/javascript-winwheel)  
+[Winwheel](https://github.com/zarocknz/javascript-winwheel)
+
 [TweenMax, now GSAP](https://gsap.com/)  
+
 [Color.js](https://colorjs.io/docs/contrast)  
 
 ## Assets used (Images, Sfx) are from [Rain World](https://store.steampowered.com/app/312520/Rain_World/)
