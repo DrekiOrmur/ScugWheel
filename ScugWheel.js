@@ -97,7 +97,11 @@ const RollAnimation = {
   'stopAngle' : null,
   'repeat' : 0
 }
-let wheelData = defaultWheel
+
+let wheelData = defaultWheel;
+let enforceSpacing = false;
+if (enforceSpacing)
+  spaceListElements(wheelData)
 
 let bgWheel = new Winwheel({
  'canvasId':'bg',
@@ -161,6 +165,44 @@ function getBgSegments() {
    wheelBg.push({'fillStyle':s.fillColor})
  }
  return wheelBg
+}
+
+function spaceListElements(list) {
+  // Count each element in the input list
+  let elCountMap = new Map()
+  for (i = 0; i < list.length; i++)
+  {
+    if (elCountMap.has(list[i]))
+      elCountMap.set(list[i], elCountMap.get(list[i]) + 1)
+    else
+      elCountMap.set(list[i], 1)
+  }
+
+  // Get these counts into an array and sort descending
+  let elCountArr = []
+  for (const [key, value] of elCountMap) {
+    elCountArr.push({'scug':key,'count':value})
+  }
+  elCountArr.sort((scugCountA, scugCountB) => scugCountB.count - scugCountA.count)
+  let scugsCounts = []
+  while (elCountArr.length > 0)
+  {
+    let c = elCountArr[0].count
+    let scugCount = {'scugs':[elCountArr.splice(0, 1)[0].scug],'count':c}
+    while (elCountArr.length > 0 && c === elCountArr[0].count)
+      scugCount.scugs.push(elCountArr.splice(0, 1)[0].scug)
+    scugsCounts.push(scugCount)
+  }
+
+  // Black magic maths
+  let redirect = [...Array(list.length).keys()]
+  for (scugCount of scugsCounts)
+  {
+    let openSpace = redirect.length
+    let spacesToFill = scugCount.count * scugCount.scugs.length
+    for (i = spacesToFill - 1; i >= 0; i--)
+      list[redirect.splice(openSpace * i / spacesToFill, 1)[0]] = scugCount.scugs[i % scugCount.scugs.length]
+  }
 }
 
 function spinSound()
@@ -339,18 +381,22 @@ function getMaxWidth(num){
  }
  
  function removeScug(scugName){
-  
-  let scugSearch = theWheel.segments.findIndex(segment => segment != null && segment.imgData.src.split('/').pop().slice(0,-4) == scugName)
+  let scugSearch = wheelData.indexOf(scugName)
 
-  if(scugSearch > 0)
+  if(scugSearch >= 0 && wheelData.length > 1)
   {
-   theWheel.deleteSegment(scugSearch)
-   bgWheel.deleteSegment(scugSearch)
-   resizeImageSegments(theWheel)
+    wheelData.splice(scugSearch, 1)
+    // apparently wheels have a phantom segment, so indexing starts at 1. Go figure.
+    theWheel.deleteSegment(scugSearch + 1)
+    bgWheel.deleteSegment(scugSearch + 1)
+    if (enforceSpacing)
+      spaceWheelSegments()
+    resizeImageSegments(theWheel)
   }
  }
 
  function addScug(scugName){
+  wheelData.push(scugName)
   let scugData = getScugData(scugName)
   let newWheelSegment = theWheel.addSegment()
   let bgWheelSegment = bgWheel.addSegment()
@@ -362,7 +408,35 @@ function getMaxWidth(num){
 
   bgWheelSegment.fillStyle = scugData.fillColor
 
+  if (enforceSpacing)
+    spaceWheelSegments()
+
   resizeImageSegments(theWheel)
+ }
+
+ function spaceWheelSegments()
+ {
+  spaceListElements(wheelData)
+  for (i = theWheel.numSegments - 1; i >= 1; i--)
+  {
+    theWheel.deleteSegment(i)
+    bgWheel.deleteSegment(i)
+  }
+  for (i = 0; i < wheelData.length; i++)
+  {
+    let scugData = getScugData(wheelData[i])
+    let newWheelSegment = theWheel.addSegment()
+    let bgWheelSegment = bgWheel.addSegment()
+
+    newWheelSegment.image = scugData.image
+    newWheelSegment.imgData = new Image();
+    newWheelSegment.imgData.onload = winwheelLoadedImage;
+    newWheelSegment.imgData.src = newWheelSegment.image
+
+    bgWheelSegment.fillStyle = scugData.fillColor
+  }
+    theWheel.deleteSegment(1)
+    bgWheel.deleteSegment(1)
  }
 
 // returns either 'light' or 'dark'
