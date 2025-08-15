@@ -1,11 +1,11 @@
 /* @import url(./Rodondo.otf); */
+@font-face {
+ font-family: "Rodondo";
+ src: url(Rodondo.otf) format("OpenType");
+}
 
 :root {
  --scugColor: #ffffff;
- @font-face {
-  font-family: "Rodondo";
-  src: url(Rodondo.otf) format("OpenType");
- }
 }
 
 .textLight, .Survivor, .Spearmaster, .Artificer {
