@@ -3,8 +3,6 @@ let width = "800";
 let height = "800";
 let clicked = false;
 
-let wheelSpinning = false;
-
 const Spearmaster = {
  image: '.\\Scugs\\Spearmaster.png',
  fillColor: '#61267a',
@@ -75,38 +73,52 @@ const Slugcats = [
  Inv
 ]
 
-let defaultWheelData = loadData(defaultWheel)
+const IdleAnimation = {
+  'type' : 'spinOngoing',
+  'spins' : 1,
+  'duration' : 20,
+  'rotationAngle' : 0,
+  'propertyName' : 'rotationAngle',
+  'propertyValue' : 0,
+  'callbackAfter' : drawBgWheel,
+  'soundTrigger' : 'segment',
+  'callbackSound' : spinSound,
+  'repeat' : -1
+}
+const RollAnimation = {
+  'type' : "spinToStop",
+  'spins' : 10,
+  'duration' : 10,
+  'easing' : 'Power3.easeInOut',
+  'callbackAfter' : drawBgWheel,
+  'callbackSound' : spinSound,
+  'soundTrigger' : 'segment',
+  'callbackFinished' : scugSelection,
+  'stopAngle' : null,
+  'repeat' : 0
+}
+let wheelData = defaultWheel
 
 let bgWheel = new Winwheel({
  'canvasId':'bg',
- 'numSegments':defaultWheelData.defaultBgWheel.length,
+ 'numSegments':wheelData.length,
  'lineWidth':3,
  'innerRadius':200,
- 'segments' : defaultWheelData.defaultBgWheel,
- 'animation' : {
-  'type': 'spinOngoing',
-  'duration' : 20
- }
+ 'segments' : getBgSegments(wheelData)
 });
 
 let theWheel = new Winwheel({
  'canvasId':'canvas',
- 'numSegments':defaultWheelData.defaultScugWheel.length,
+ 'numSegments':wheelData.length,
  'innerRadius':200,
  'textAlignment':'inner',
  'textMargin': 100,
  'lineWidth':3,
  'pointerAngle': 90,
  'drawMode' : 'segmentImage',
- 'segments' : defaultWheelData.defaultScugWheel,
- 'animation' : {
-  'type': 'spinOngoing',
-  'duration' : 100,
-  'callbackAfter' : drawBgWheel,
-  'soundTrigger' : 'segment',
-  'callbackSound' : spinSound
- }
-}); 
+ 'segments' : getScugSegments(wheelData),
+ 'animation' : IdleAnimation
+});
 
 let audioResult1 = new Audio('.\\Sfx\\Karma_KarmaPitchDiscovery.wav');
 let audioResult2 = new Audio('.\\Sfx\\Karma_capBell1.wav');
@@ -129,22 +141,26 @@ addEventListener("load", () => {
 
 // --- HELPER FUNCTIONS --- //
 
-
-function loadData(data) {
-
+function getScugSegments() {
  let wheelScug = []
+
+ for(let i = 0; i < wheelData.length; i++)
+ {
+   let s = getScugData(wheelData[i])
+   wheelScug.push({'image':s.image})
+ }
+ return wheelScug
+}
+
+function getBgSegments() {
  let wheelBg = []
 
- for(let i = 0; i < data.length; i++)
+ for(let i = 0; i < wheelData.length; i++)
  {
-   let s = getScugData(data[i])
-   let img = {'image':s.image}
-   let fill = {'fillStyle':s.fillColor}
-   console.log(s)
-   wheelScug.push(img)
-   wheelBg.push(fill)
+   let s = getScugData(wheelData[i])
+   wheelBg.push({'fillStyle':s.fillColor})
  }
- return {"defaultScugWheel":wheelScug, "defaultBgWheel" :  wheelBg}
+ return wheelBg
 }
 
 function spinSound()
@@ -161,7 +177,6 @@ function spinSound()
   audioSpinState = 1
  }
 }
-
 
 function resultSound(sound)
 {
@@ -181,23 +196,13 @@ function resultSound(sound)
  }
 }
 
-
 function spinWheel()
 {
- clicked = true;
-
- let stopAngle = calcStop(theWheel.numSegments)
-
- theWheel.animation.spins = 10;
- theWheel.animation.duration = 10;
- theWheel.animation.easing = 'Power3.easeInOut';
- theWheel.animation.type = "spinToStop";
- theWheel.animation.callbackFinished = scugSelection;
- theWheel.animation.stopAngle = stopAngle;
- theWheel.animation.repeat = 0;
- wheelSpinning = true;
- theWheel.startAnimation();
-
+  clicked = true;
+  theWheel.animation = RollAnimation;
+  wheelSpinning = true;
+  theWheel.startAnimation();
+  document.getElementById("wheel").removeAttribute("onclick");
 }
 
 function scugSelection()
@@ -241,7 +246,6 @@ function scugSelection()
   document.getElementById("pointer").style.top = "-55px"
   document.getElementById("overlay").style.display = "block";
   document.getElementById("result").style.display = "flex";
-  document.getElementById("wheel").removeAttribute("onclick");
  }
 }
 
@@ -268,27 +272,13 @@ function closeResult() {
 
 function resetSpin()
 {
- theWheel.animation.spins = 5;
- theWheel.animation.duration = 200;
- theWheel.animation.easing = null;
- theWheel.animation.rotationAngle = 0;
- theWheel.animation.type = "spinOngoing";
- theWheel.animation.stopAngle = null;
- theWheel.animation.repeat = 1;
- 
- theWheel.rotationAngle = 0;
- theWheel.startAnimation();
- theWheel.draw(true)
- document.getElementById("wheel").setAttribute('onclick', "spinWheel()");
- clicked = false;
-}
+  theWheel.stopAnimation(false);
+  theWheel.rotationAngle = 0;
+  theWheel.animation = IdleAnimation;
 
-function calcStop(num) {
- let angle = 360/num
- let segment = Math.floor(Math.random()*num)+1
- let a = Math.round(((angle*segment)-1) + (Math.floor((Math.random() * angle)) -1))
-
- return a
+  theWheel.startAnimation();
+  document.getElementById("wheel").setAttribute('onclick', "spinWheel()");
+  clicked = false;
 }
 
 function drawBgWheel () {
@@ -297,8 +287,6 @@ function drawBgWheel () {
 }
 
 function resizeImageSegments(wheel) {
- console.log(wheel.numSegments);
-
  for(var i=1; i <= wheel.numSegments; i++)
  {
    let srcImage = imageProps(theWheel.segments[i].imgData.src)
@@ -346,10 +334,6 @@ function getMaxWidth(num){
  return arcChord
  }
 
- function getScugSegment(segment, name) {
-  return segment.imgData.src == name
- }
-
  function getScugData(scug) {
   return Slugcats.find((element) => element.image.split('\\').pop().slice(0,-4) == scug)
  }
@@ -363,16 +347,11 @@ function getMaxWidth(num){
    theWheel.deleteSegment(scugSearch)
    bgWheel.deleteSegment(scugSearch)
    resizeImageSegments(theWheel)
- 
-   console.log(theWheel)
-  
-   theWheel.draw()
-   bgWheel.draw()
   }
  }
 
  function addScug(scugName){
-  let scugData = Slugcats.find((element) => element.image.split('\\').pop().slice(0,-4) == scugName)
+  let scugData = getScugData(scugName)
   let newWheelSegment = theWheel.addSegment()
   let bgWheelSegment = bgWheel.addSegment()
 
@@ -384,11 +363,6 @@ function getMaxWidth(num){
   bgWheelSegment.fillStyle = scugData.fillColor
 
   resizeImageSegments(theWheel)
-
-  console.log(theWheel)
- 
-  theWheel.draw()
-  bgWheel.draw()
  }
 
 // returns either 'light' or 'dark'
