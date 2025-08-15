@@ -1,0 +1,5 @@
+~line 585
+
+//imageTop = (centerY - scaledHeight);
+
+Modified so that the images would be drawn further out, as the original way segment images are drawn is via the whole image being a segment and starting at the centre.

@@ -1,0 +1,190 @@
+@import url(./Rodondo.otf);
+
+:root {
+ --scugColor: #ffffff;
+}
+
+.textLight, .Survivor, .Spearmaster, .Artificer {
+ color: #ffffff;
+ border-color: #000000;
+}
+
+.textDark {
+ color: #000000;
+ border-color: #000000;
+}
+
+#totalScreen{
+ width: 100%;
+ height: 100%;
+}
+
+#wheel {
+ margin-left: 300px;
+ position: relative;
+ /*
+ position: flex;
+ justify-content: center;
+ align-items: center; */
+}
+
+#wheel canvas, #canvas {
+ position: absolute;
+}
+
+button {
+ padding: 0px;
+ height: 25px;
+ width: 25px;
+ display: inline;
+ font-size: 16;
+}
+
+#menu {
+ font-family: Rodondo;
+ font-size: 1.5em;
+ float: left;
+ background-color: transparent;
+ text-align: center;
+ width: 300px;
+ display: flex;
+ flex-direction: column;
+ align-items: center;
+}
+
+#scugContainer {
+ display: flex;
+ flex-direction: row;
+ justify-content: space-between;
+ align-items: center;
+ height: 50px;
+ width: 250px;
+ overflow:hidden;
+}
+
+#scug {
+ border-style: solid;
+ line-height: 90%;
+ padding: 3px;
+ border-radius: 5px;
+ margin: 5px;
+ width: 50%;
+ height: 50%;
+}
+
+#pointer {
+ /* position: fixed;
+ /*top: 37%;
+ left: 85%; 
+ top: 50%;
+ right: 50%;
+ transform: translate(44vw,-15vh); */
+
+ position: relative;
+
+ left: 765px;
+ top: 350px;
+ height: 10%;
+ width: auto;
+ z-index: 40;
+}
+
+#result {
+ display: none;
+ position: relative;
+ right: -150px;
+ top: 198px;
+/*
+ position: fixed;
+ top: 50%;
+ left: 50%;
+ transform: translate(-37%,-75%); */
+
+ flex-direction: column; 
+ justify-content: space-between;
+ align-items: center;
+ text-align: center;
+ font-family: Rodondo;
+ font-weight: 500;
+ font-size: 36px;
+ background-color: var(--scugColor);
+ height: 400px;
+ width: 500px;
+ z-index: 50;
+ border: 3px #000000 solid;
+ border-radius: 20px;
+}
+
+#scugResult {
+ padding-bottom: 25px;
+ width: auto;
+ height: 200px;
+}
+
+#overlay{
+ display: none;
+ position: fixed;
+ width:100%;
+ height:100%;
+ top:0;
+ left:0;
+ background-color: #000000;
+ opacity:0.6;
+ z-index: 5;
+}
+
+.minus {
+ float: left;
+}
+
+.plus {
+ float: right;
+}
+
+.other {
+ width: 100px;
+}
+
+.Spearmaster {
+ background-color: #61267a;
+}
+
+.Artificer {
+ background-color: #761000;
+}
+
+.Hunter {
+ background-color: #cd6d9b;
+}
+
+.Gourmand {
+ background-color: #ffd7ab;
+}
+
+.Survivor {
+ background-color: #000000;
+}
+
+.Monk {
+ background-color: #ffe669;
+}
+
+.Rivulet {
+ background-color: #92c5d5;
+}
+
+.Saint {
+ background-color: #69bf5a;
+}
+
+.Watcher {
+ background-color: #8F94C1;
+}
+
+.Slugpup {
+ background-color: #91637E;
+}
+
+.Inv {
+ background-color: #B1FDFA;
+}
