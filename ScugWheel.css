@@ -41,7 +41,7 @@ button {
 }
 
 #menu {
- font-family: Rodondo;
+ font-family: "Rodondo";
  font-size: 1.5em;
  float: left;
  background-color: transparent;
@@ -90,7 +90,7 @@ button {
  justify-content: space-between;
  align-items: center;
  text-align: center;
- font-family: Rodondo;
+ font-family: "Rodondo";
  font-weight: 500;
  font-size: 36px;
  background-color: var(--scugColor);
