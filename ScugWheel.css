@@ -62,6 +62,23 @@ button {
  overflow:hidden;
 }
 
+input {
+ vertical-align: bottom;
+ position: relative;
+ top: -2px;
+ margin-right: 5px;
+}
+
+#toggleContainer {
+ display: flex;
+ align-items: center;
+ background-color: #aaaaaa;
+ border-style: solid;;
+ border-radius: 5px;
+ padding: 3px;
+ margin: 5px;
+}
+
 #scug {
  border-style: solid;
  line-height: 90%;

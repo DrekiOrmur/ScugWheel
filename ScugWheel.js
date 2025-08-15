@@ -145,6 +145,14 @@ addEventListener("load", () => {
 
 // --- HELPER FUNCTIONS --- //
 
+function toggleSpacing(obj) {
+  if($(obj).is(":checked")) {
+    enforceSpacing = true;
+    spaceWheelSegments();
+    resizeImageSegments(theWheel);
+  } else { enforceSpacing = false;}
+}
+
 function getScugSegments() {
  let wheelScug = []
 
