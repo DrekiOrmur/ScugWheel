@@ -22,10 +22,6 @@
 #wheel {
  margin-left: 300px;
  position: relative;
- /*
- position: flex;
- justify-content: center;
- align-items: center; */
 }
 
 #wheel canvas, #canvas {
@@ -73,15 +69,7 @@ button {
 }
 
 #pointer {
- /* position: fixed;
- /*top: 37%;
- left: 85%; 
- top: 50%;
- right: 50%;
- transform: translate(44vw,-15vh); */
-
  position: relative;
-
  left: 765px;
  top: 350px;
  height: 10%;
@@ -94,12 +82,6 @@ button {
  position: relative;
  right: -150px;
  top: 198px;
-/*
- position: fixed;
- top: 50%;
- left: 50%;
- transform: translate(-37%,-75%); */
-
  flex-direction: column; 
  justify-content: space-between;
  align-items: center;
