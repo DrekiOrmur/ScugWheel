@@ -16,9 +16,9 @@
 
 Only tested in OBS and Firefox, provided as-is.
 
-**A. Simply open ScugWheel.html  **
+**A. Simply open ScugWheel.html**
 
-**B. OBS Browser source  **
+**B. OBS Browser source**
  1. Create browser source
  ![](Example/OBS_Source.png)
  2. Open `wheelConfig.js` with your text editor of choice to customize the default wheel that will spawn.
