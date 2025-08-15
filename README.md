@@ -1,18 +1,18 @@
-###Created by [Dreki Ormur](https://bsky.app/profile/drekiormur.bsky.social)
+## **Created by [Dreki Ormur](https://bsky.app/profile/drekiormur.bsky.social)**
 
-##Libraries used  
+## Libraries used  
 [Winwheel](https://github.com/zarocknz/javascript-winwheel)
 [TweenMax, now GSAP](https://gsap.com/)
 [Color.js](https://colorjs.io/docs/contrast)
 
-##Assets used (Images, Sfx) are from [Rain World](https://store.steampowered.com/app/312520/Rain_World/)
+## Assets used (Images, Sfx) are from [Rain World](https://store.steampowered.com/app/312520/Rain_World/)
 
-##Font  
+## Font  
 [Rodondo](https://www.dafont.com/rodondo.font)
 
 Only tested in OBS and Firefox, provided as-is.
 
-##How to use
+## <ins>How to use</ins>
 
 A. Simply open ScugWheel.html  
 
