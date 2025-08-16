@@ -41,7 +41,7 @@ const Rivulet = {
 const Saint = {
  image: '.\\Scugs\\Saint.png',
  fillColor: '#69bf5a',
- rotate: false,
+ rotate: true,
 };
 const Watcher = {
  image: '.\\Scugs\\Watcher.png',
@@ -127,12 +127,9 @@ let theWheel = new Winwheel({
 let audioResult1 = new Audio('.\\Sfx\\Karma_KarmaPitchDiscovery.wav');
 let audioResult2 = new Audio('.\\Sfx\\Karma_capBell1.wav');
 let audioResult3 = new Audio('.\\Sfx\\Karma_GhostPingBase.wav');
-let audioSpin1 = new Audio('.\\Sfx\\Rain_tick.wav');
-let audioSpin2 = new Audio('.\\Sfx\\Rain_tock.wav');
+let audioSpinQueue = [];
 let audioSpinState = 0
 
-audioSpin1.volume = 0.7
-audioSpin2.volume = 0.7
 
 addEventListener("load", () => {
 
@@ -215,17 +212,18 @@ function spaceListElements(list) {
 
 function spinSound()
 {
- if(audioSpinState) {
-  audioSpin1.pause();
-  audioSpin1.currentTime = 0;
-  audioSpin1.play();
-  audioSpinState = 0
- } else {
-  audioSpin2.pause();
-  audioSpin2.currentTime = 0;
-  audioSpin2.play();
-  audioSpinState = 1
- }
+  let audioSpin = new Audio(audioSpinState ? '.\\Sfx\\Rain_tick.wav' : '.\\Sfx\\Rain_tock.wav');
+  audioSpinQueue.push(audioSpin);
+  audioSpin.addEventListener("ended", () => audioSpinQueue.shift());
+
+  let p = audioSpin.play();
+  p.catch(() => audioSpinQueue.pop());
+  p.then(() =>
+  {
+    for (audio of audioSpinQueue)
+      audio.volume = 0.7 / Math.log(2.2 + audioSpinQueue.length * 0.5);
+    audioSpinState = (audioSpinState + 1) % 2;
+  });
 }
 
 function resultSound(sound)
@@ -293,7 +291,7 @@ function scugSelection()
 
   document.getElementById("resultText").innerHTML = "Selected Character is <br/>" + chosenScug
   
-  document.getElementById("pointer").style.top = "-55px"
+  document.getElementById("pointer").style.top = "-52px"
   document.getElementById("overlay").style.display = "block";
   document.getElementById("result").style.display = "flex";
  }
@@ -314,7 +312,7 @@ function selectionAdjust(originalStop) {
 }
 
 function closeResult() {
- document.getElementById("pointer").style.top = "350px"
+ document.getElementById("pointer").style.top = "354px"
  document.getElementById("overlay").style.display = "none";
  document.getElementById("result").style.display = "none";
  document.getElementById("resultText").classList.remove("textLight", "textDark");
