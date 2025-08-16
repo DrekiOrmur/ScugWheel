@@ -293,7 +293,7 @@ function scugSelection()
 
   document.getElementById("resultText").innerHTML = "Selected Character is <br/>" + chosenScug
   
-  document.getElementById("pointer").style.top = "-55px"
+  document.getElementById("pointer").style.top = "-52px"
   document.getElementById("overlay").style.display = "block";
   document.getElementById("result").style.display = "flex";
  }
@@ -314,7 +314,7 @@ function selectionAdjust(originalStop) {
 }
 
 function closeResult() {
- document.getElementById("pointer").style.top = "350px"
+ document.getElementById("pointer").style.top = "354px"
  document.getElementById("overlay").style.display = "none";
  document.getElementById("result").style.display = "none";
  document.getElementById("resultText").classList.remove("textLight", "textDark");
